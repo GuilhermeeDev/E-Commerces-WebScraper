@@ -113,11 +113,9 @@ HTML_SELECTORS = {
 OUTPUT_DIRECTORY = "./Outputs/"  # The base path to the output directory
 
 # Template Constants:
-PRODUCT_DESCRIPTION_TEMPLATE = """Product Name: {product_name}
+PRODUCT_DESCRIPTION_TEMPLATE = """{product_name}
 
-Price: From R${current_price} to R${old_price} ({discount})
-
-Description: {description}
+Preço: De R${current_price} a R${old_price} ({discount})
 
 🛒 Encontre no Mercado Livre:
 👉 {url}"""

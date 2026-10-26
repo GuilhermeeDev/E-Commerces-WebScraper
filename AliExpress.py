@@ -148,11 +148,9 @@ SCROLL_PAUSE_TIME = 0.5  # Pause duration in seconds between scroll steps
 SCROLL_STEP = 300  # Number of pixels to scroll per step for lazy loading
 
 # Template Constants:
-PRODUCT_DESCRIPTION_TEMPLATE = """Product Name: {product_name}
+PRODUCT_DESCRIPTION_TEMPLATE = """{product_name}
 
-Price: From R${current_price} to R${old_price} ({discount})
-
-Description: {description}
+Preço: De R${current_price} a R${old_price} ({discount})
 
 🛒 Encontre no AliExpress:
 👉 {url}"""  # Template for product description text file with placeholders for formatting

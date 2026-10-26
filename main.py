@@ -83,7 +83,11 @@ from PIL import Image, ImageChops, JpegImagePlugin  # For image processing, mask
 from PIL.PngImagePlugin import PngInfo  # For preserving PNG text metadata during cropped saves
 from Shein import Shein  # Import the Shein class
 from Shopee import Shopee  # Import the Shopee class
-from tkinter import Tk, messagebox  # For showing GUI warnings
+try:  # Optional import: tkinter may not be compiled into the Python installation (e.g., minimal builds)
+    from tkinter import Tk, messagebox  # For showing GUI warnings
+except ImportError:  # Fall back to placeholders so the script can run without the GUI warning support
+    Tk = None  # Placeholder for the hidden Tk root window class
+    messagebox = None  # Placeholder for the GUI warning dialog class
 from tqdm import tqdm  # Progress bar for URL processing
 from typing import Any, Dict, List, Optional, Set, Tuple, Union  # For type-annotated containers used by final verification functions
 from urllib.parse import urlparse  # For parsing URL hostnames
@@ -2373,8 +2377,8 @@ def validate_product_information(product_data, product_name_safe, description_fi
         reasons.append(f"{BackgroundColors.YELLOW}Product discount is missing or empty{Style.RESET_ALL}")
     
     if "description" not in product_data or not product_data["description"].strip():  # Verify if description is missing or empty
-        reasons.append(f"{BackgroundColors.YELLOW}Product description is missing or empty{Style.RESET_ALL}")
-        
+        pass  # Description is no longer captured or required in the product output template; validation ignores it
+
     return (len(reasons) == 0), reasons  # Return True if valid (no reasons), otherwise False and the list of reasons
 
 
@@ -4968,6 +4972,12 @@ def handle_gemini_processing(product_description: str, description_file: str, pr
 
     verbose_output(f"{BackgroundColors.GREEN}Step 2: {BackgroundColors.CYAN}Formatting with Gemini AI{Style.RESET_ALL}")  # Step 2: Format the product description with Gemini AI
 
+    if not api_keys:  # Verify whether any Gemini API keys are available for generation
+        template_file = os.path.join(os.path.dirname(description_file), "Template.txt")  # Resolve Template.txt path next to the description file
+        shutil.copyfile(description_file, template_file)  # Fall back to copying the raw product description as the template file
+        print(f"{BackgroundColors.YELLOW}[WARNING] No Gemini API keys configured. Copied raw description to {BackgroundColors.CYAN}{template_file}{Style.RESET_ALL}")  # Report scraping-only fallback behavior
+        return True  # Return success so the scraping pipeline can proceed without AI generation
+
     success = False  # Initialize Gemini formatting success flag for this URL.
     exhausted_key_indices = set()  # Track exhausted key labels during the current rotation cycle.
     exhausted_cycles = 0  # Track how many full exhausted cycles happened for this URL.
@@ -5765,7 +5775,7 @@ def main():
 
     api_keys = load_api_keys()  # Load and validate Gemini API keys
     if not api_keys:  # Verify if at least one API key is available
-        return  # Exit early when no keys are available
+        print(f"{BackgroundColors.YELLOW}[WARNING] No Gemini API keys configured. Running in scraping-only mode (Template.txt will contain the raw product description).{Style.RESET_ALL}")  # Warn user that AI generation is disabled but continue scraping
 
     if not ensure_input_file_exists():  # Ensure the input file exists, and if not, create it with instructions
         return  # Exit if unable to ensure input file

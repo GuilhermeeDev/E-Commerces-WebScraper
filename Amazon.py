@@ -152,11 +152,9 @@ VIDEO_DOWNLOAD_MIN_PACING_SECONDS = 1.5  # Minimum pacing delay between sequenti
 VIDEO_DOWNLOAD_MAX_PACING_SECONDS = 4.0  # Maximum pacing delay between sequential video downloads
 
 # Template Constants:
-PRODUCT_DESCRIPTION_TEMPLATE = """Product Name: {product_name}
+PRODUCT_DESCRIPTION_TEMPLATE = """{product_name}
 
-Price: From R${current_price} to R${old_price} ({discount})
-
-Description: {description}
+Preço: De R${current_price} a R${old_price} ({discount})
 
 🛒 Encontre na Amazon:
 👉 {url}"""  # Template for product description text file with placeholders for formatting

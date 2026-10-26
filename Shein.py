@@ -157,11 +157,9 @@ SCROLL_PAUSE_TIME = 0.5  # Seconds to pause between scrolls
 SCROLL_STEP = 300  # Pixels to scroll per step
 
 # Template Constants:
-PRODUCT_DESCRIPTION_TEMPLATE = """Product Name: {product_name}
+PRODUCT_DESCRIPTION_TEMPLATE = """{product_name}
 
-Price: From R${current_price} to R${old_price} ({discount})
-
-Description: {description}
+Preço: De R${current_price} a R${old_price} ({discount})
 
 🛒 Encontre na Shein:
 👉 {url}"""  # Template for product description text file with placeholders
