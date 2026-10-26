@@ -1,3 +1,10 @@
+# env file
+.env
+./env
+/venv
+./venv
+.venv
+
 # Text Files
 *.txt
 !requirements.txt
